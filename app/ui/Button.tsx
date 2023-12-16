@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 
 export interface ButtonProps {
     size?: 'medium' | 'large';
+    type?: 'button' | 'submit'
     variant?: 'contained' | 'tonal' | 'outlined';
     disabled?: boolean;
     children: React.ReactNode;
@@ -18,6 +19,7 @@ export function Button({
   size = 'medium',
   variant = 'contained',
   disabled = false,
+  type='button',
   children,
   onClick,
 }: ButtonProps) {
@@ -78,7 +80,7 @@ export function Button({
 
   return (
     <button
-      type="button"
+      type={type}
       className={`${BASE_BUTTON_CLASSES} ${computedClass}`}
       onClick={onClick}
     >
