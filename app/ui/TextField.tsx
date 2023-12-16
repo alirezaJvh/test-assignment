@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, ChangeEvent, useState, useMemo, KeyboardEvent } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 export interface TextFieldProps {
     title?: string;
@@ -8,8 +9,9 @@ export interface TextFieldProps {
     hint?: string;
     error?: string;
     initValue?: string;
-    onChange?: (value: string) => void;
-    onClick?: (value: string) => void;
+    register?: any
+    name: string;
+    rules: Record<string, string | boolean>
 }
 
 
@@ -22,9 +24,10 @@ export function TextField({
   placeholder,
   hint,
   error,
-  onClick,
   initValue,
-  onChange,
+  register,
+  name,
+  rules = {}
 }: TextFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState(initValue || '');
@@ -40,12 +43,6 @@ export function TextField({
     return error ? errorClasses : containerClasses;
   }, [error, containerClasses]);
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (onChange) {
-      setValue(event.target.value);
-      onChange(event.target.value);
-    }
-  };
 
   const handleContainerClick = () => {
     if (inputRef.current) {
@@ -53,11 +50,6 @@ export function TextField({
     }
   };
 
-  const handleOnClick = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      if (onClick) onClick(value);
-    }
-  };
 
   return (
     <div
@@ -69,14 +61,12 @@ export function TextField({
     >
       <div className="text-sm font-medium">{title}</div>
       <div className={`${BASE_CLASSES} ${computedClass}`}>
-        <input
-          type="text"
+        <input 
+          type="text" 
           ref={inputRef}
-          value={value}
-          className={INPUT_CLASSES}
+          className={INPUT_CLASSES} 
           placeholder={placeholder}
-          onKeyDown={e => handleOnClick(e)}
-          onChange={handleInputChange}
+          {...register(name, rules)} 
         />
       </div>
       {error ? (
