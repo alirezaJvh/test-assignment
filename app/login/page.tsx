@@ -1,47 +1,40 @@
 'use client';
 
-// import './index.scss';
-import React, { useState } from 'react';
 import Image from 'next/image';
 import authImage from '../assets/car.jpeg';
-// import { Logo } from '@/components/Logo';
-import { GroupButton } from '../ui/GroupButton';
 import { TextField } from '../ui/TextField';
 import { Button } from '../ui/Button';
-// import { SocialButton } from '@/components/social-button';
-// import { CheckBox } from '@/components/form/CheckBox';
 import { useRouter } from 'next/navigation';
 import { signInUser } from '@/app/lib/auth';
+import { useForm, SubmitHandler } from "react-hook-form"
+
+
+type Inputs = {
+  email: string;
+  password: string;
+}
 
 export default function Login() {
   const { push } = useRouter();
-  // const data = await getData();
-  const [authAction, setAuthAction] = useState<string>('Sign in');
-  // eslint-disable-next-line
-  const [email, setEmail] = useState<string>('');
-  // eslint-disable-next-line
-  const [password, setPassword] = useState<string>('');
-  // eslint-disable-next-line
-  const [fullNamem, setFullName] = useState<string>('');
-
-  const handleToggleClick = (currentAction: string) => {
-    setAuthAction(currentAction);
-  };
-
-  const createUser = () => {
-    
-  };
-
-  const login = async () => {
-    console.log('here')
+  const {     
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>()
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log('onSumbit')
+    console.log(errors)
+    console.log(data)
     try {
-      await signInUser(email, password);
-      console.log('here');
-      push('/dashboard');
-    } catch (error: unknown) {
-      console.log(error);
+      await signInUser(data.email, data.password);
+      push('/')
+    } catch (e) {
+      console.log(e)
     }
-  };
+  }
+
+
 
   const lefImageWrapper = (
     <div
@@ -56,52 +49,31 @@ export default function Login() {
     </div>
   );
 
-  const welcomBox = (
-    <div
-      className={`text-xl font-semibold ${
-        authAction === 'Sign in' ? '' : 'hidden'
-      }`}
-    >
-      Welcome Back to RentCar
-    </div>
-  );
 
   const forms = (
-    <div className="flex flex-col gap-8 lg:gap-5 2xl:gap-8 w-full">
-      <div
-        className={`${
-          authAction === 'Sign in' ? 'hidden' : 'animate-fade-in-name '
-        }`}
-      >
-        <TextField
-          title="Full Name"
-          placeholder="Enter Your Name"
-          onChange={setFullName}
-        />
-      </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 lg:gap-5 2xl:gap-8 w-full">
       <TextField
         title="Email"
         placeholder="Enter Your Email"
-        onChange={setEmail}
+        name='email'
+        register={register}
+        rules={{required: 'Email is required'}}
+        error={errors.email?.message}
       />
       <div>
         <TextField
           title="Password"
           placeholder="Enter Your Password"
-          hint={
-            authAction === 'Sign up'
-              ? 'Password must contain characters and numbers'
-              : ''
-          }
-          onChange={setPassword}
+          name="password"
+          register={register}
+          rules={{required: 'Password is required'}}
+          error={errors.password?.message}
         />
       </div>
-      {authAction === 'Sign up' && (
-        <Button onClick={createUser} size="large">
-          Create Account
-        </Button>
-      )}
-    </div>
+      <Button type='submit' size="large">
+        Sign in
+      </Button>
+    </form>
   );
 
 
@@ -110,18 +82,10 @@ export default function Login() {
       {lefImageWrapper}
       <div className="col-span-10 lg:col-span-4 h-full pt-6 2xl:pt-8 flex justify-center">
         <div className="flex flex-col items-center gap-16 lg:gap-10 2xl:gap-16 w-[410px]">
-          <GroupButton<string>
-            buttonList={['Sign in', 'Sign up']}
-            initialButton="Sign in"
-            handleClick={handleToggleClick}
-          />
-          {welcomBox}
+        <div className="text-xl font-semibold">
+          Welcome Back to RentCar
+        </div>
           {forms}
-          {authAction === 'Sign in' && (
-            <Button onClick={() => login()} size="large">
-              Continue
-            </Button>
-          )}
         </div>
       </div>
     </div>
