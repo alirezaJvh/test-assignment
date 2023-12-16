@@ -11,7 +11,7 @@ import { Button } from '../ui/Button';
 // import { SocialButton } from '@/components/social-button';
 // import { CheckBox } from '@/components/form/CheckBox';
 import { useRouter } from 'next/navigation';
-// import { signInUser } from '@/app/lib/auth';
+import { signInUser } from '@/app/lib/auth';
 
 export default function Login() {
   const { push } = useRouter();
@@ -34,13 +34,13 @@ export default function Login() {
 
   const login = async () => {
     console.log('here')
-    // try {
-    //   await signInUser(email, password);
-    //   console.log('here');
-    //   push('/dashboard');
-    // } catch (error: unknown) {
-    //   console.log(error);
-    // }
+    try {
+      await signInUser(email, password);
+      console.log('here');
+      push('/dashboard');
+    } catch (error: unknown) {
+      console.log(error);
+    }
   };
 
   const lefImageWrapper = (
@@ -110,7 +110,6 @@ export default function Login() {
       {lefImageWrapper}
       <div className="col-span-10 lg:col-span-4 h-full pt-6 2xl:pt-8 flex justify-center">
         <div className="flex flex-col items-center gap-16 lg:gap-10 2xl:gap-16 w-[410px]">
-          {/* <Logo /> */}
           <GroupButton<string>
             buttonList={['Sign in', 'Sign up']}
             initialButton="Sign in"
