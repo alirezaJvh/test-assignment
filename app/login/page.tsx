@@ -28,8 +28,8 @@ export default function Login() {
     setAuthAction(currentAction);
   };
 
-  const test = () => {
-    console.log('open Modal');
+  const createUser = () => {
+    
   };
 
   const login = async () => {
@@ -97,7 +97,7 @@ export default function Login() {
         />
       </div>
       {authAction === 'Sign up' && (
-        <Button onClick={test} size="large">
+        <Button onClick={createUser} size="large">
           Create Account
         </Button>
       )}

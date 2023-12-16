@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import type { NextAuthConfig } from 'next-auth';
+import { prisma } from '@/app/lib/prisma';
 
 export const authOptions: NextAuthConfig = {
   pages: {
@@ -10,28 +11,16 @@ export const authOptions: NextAuthConfig = {
   providers: [
     Credentials({
       name: 'credentials',
-      async authorize(credentials) {
+      async authorize(credentials: {email: string, password: string}) {
         console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
         console.log('call here');
-        const { username, password } = credentials;
-        console.log(username)
+        const { email, password } = credentials;
         console.log(password)
-        return null
-        const res = await fetch(
-          'api/auth/login',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `username=${username}&password=${password}`,
-          },
-        );
-        // if (res.status === 200) {
-        //   const data = await res.json();
-        //   return data;
-        // }
-        // return null;
+        const user = await prisma.user.findUnique({
+            where: { email }
+        })
+        console.log(user)
+        return null;
       },
     }),
   ],

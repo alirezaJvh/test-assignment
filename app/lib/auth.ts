@@ -8,7 +8,7 @@ export const signInUser = async (
 ): Promise<string> => {
   try {
     const res = await signIn('credentials', {
-      username: email,
+      email,
       password,
       redirect: false,
     });
