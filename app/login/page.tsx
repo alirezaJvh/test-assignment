@@ -22,7 +22,8 @@ export default function Login() {
     watch,
     formState: { errors },
   } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+
+  const onLogin: SubmitHandler<Inputs> = async (data) => {
     console.log('onSumbit')
     console.log(errors)
     console.log(data)
@@ -51,7 +52,7 @@ export default function Login() {
 
 
   const forms = (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 lg:gap-5 2xl:gap-8 w-full">
+    <form onSubmit={handleSubmit(onLogin)} className="flex flex-col gap-8 lg:gap-5 2xl:gap-8 w-full">
       <TextField
         title="Email"
         placeholder="Enter Your Email"

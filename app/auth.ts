@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import type { NextAuthConfig } from 'next-auth';
 import { prisma } from '@/app/lib/prisma';
+import bcrypt from 'bcrypt';
 
 export const authOptions: NextAuthConfig = {
   pages: {
@@ -11,15 +12,16 @@ export const authOptions: NextAuthConfig = {
   providers: [
     Credentials({
       name: 'credentials',
-      async authorize(credentials: {email: string, password: string}) {
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-        console.log('call here');
+      async authorize(credentials) {
         const { email, password } = credentials;
-        console.log(password)
         const user = await prisma.user.findUnique({
-            where: { email }
+            where: { email: email as string }
         })
+        console.log('@@@')
         console.log(user)
+        if (!user) return null
+        const passwordsMatch = await bcrypt.compare(password, user.password);
+        if (passwordsMatch) return user;
         return null;
       },
     }),
@@ -28,12 +30,7 @@ export const authOptions: NextAuthConfig = {
     authorized({ auth, request: { nextUrl } }) {
       console.log('authorized');
       const isLoggedIn = !!auth?.user;
-    //   const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
       const isOnLogin = nextUrl.pathname.startsWith('/login');
-    //   if (isOnDashboard) {
-    //     if (isLoggedIn) return true;
-    //     return false;
-    //   }
       if (isLoggedIn && isOnLogin) {
         return Response.redirect(new URL('/', nextUrl));
       }
