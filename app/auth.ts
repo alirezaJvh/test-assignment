@@ -12,16 +12,15 @@ export const authOptions: NextAuthConfig = {
   providers: [
     Credentials({
       name: 'credentials',
-      async authorize(credentials) {
+      async authorize(credentials: {email: string, password: string}) {
         const { email, password } = credentials;
         const user = await prisma.user.findUnique({
             where: { email: email as string }
         })
-        console.log('@@@')
-        console.log(user)
         if (!user) return null
-        const passwordsMatch = await bcrypt.compare(password, user.password);
-        if (passwordsMatch) return user;
+        console.log(user)
+        const passwordsMatch = atob(user.password) === password
+        if (passwordsMatch) return { name: user.name, emial: user.email };
         return null;
       },
     }),
@@ -29,10 +28,14 @@ export const authOptions: NextAuthConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       console.log('authorized');
+      console.log(auth)
       const isLoggedIn = !!auth?.user;
       const isOnLogin = nextUrl.pathname.startsWith('/login');
       if (isLoggedIn && isOnLogin) {
         return Response.redirect(new URL('/', nextUrl));
+      }
+      if (!isLoggedIn && !isOnLogin) {
+        return Response.redirect(new URL('/login', nextUrl));
       }
       return true;
     },

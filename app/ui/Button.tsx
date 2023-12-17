@@ -23,9 +23,7 @@ export function Button({
   children,
   onClick,
 }: ButtonProps) {
-
     const setPrimaryClass = (variant: string) => {
-        console.log(variant)
       switch (variant) {
         case 'tonal': {
           return 'text-brand-500 bg-brand-50 hover:bg-brand-100';
@@ -57,9 +55,7 @@ export function Button({
         disabled: boolean,
         variant: string,
       ) => {
-          
         const styleType = !disabled ? 'primary' : 'disabled';
-        console.log('here')
         switch (styleType) {
           case 'disabled': {
             return setDisabledClass(variant);
