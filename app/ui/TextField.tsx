@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, ChangeEvent, useState, useMemo, KeyboardEvent } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 export interface TextFieldProps {
@@ -9,7 +9,7 @@ export interface TextFieldProps {
     hint?: string;
     error?: string;
     initValue?: string;
-    register: any
+    register: any;
     name: string;
     rules: Record<string, string | boolean>
 }
@@ -24,13 +24,11 @@ export function TextField({
   placeholder,
   hint,
   error,
-  initValue,
   register,
   name,
   rules = {}
 }: TextFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
-  const [value, setValue] = useState(initValue || '');
   const inputRef = useRef<HTMLInputElement>(null);
   const containerClasses = ` ${
     isFocused
