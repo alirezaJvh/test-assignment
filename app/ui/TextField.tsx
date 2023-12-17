@@ -9,7 +9,7 @@ export interface TextFieldProps {
     hint?: string;
     error?: string;
     initValue?: string;
-    register?: UseFormRegisterReturn<string>
+    register: any
     name: string;
     rules: Record<string, string | boolean>
 }
