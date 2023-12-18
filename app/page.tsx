@@ -1,20 +1,16 @@
-import Image from 'next/image'
-import { Button } from './ui/Button'
-import { TextField } from './ui/TextField'
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+// import { Button } from "./ui/Button";
+import { ReserveCalendar } from "./ui/ReserveCalendar";
+// import { useQuery } from '@tanstack/react-query'
 
 export default function Home() {
-  return (<div>
-    salam
-    <Button>by</Button>
-    {/* <TextField placeholder='slaam' /> */}
-    <div className='flex'>
-      <div>
-        by
+  return (
+    <div className="flex justify-center w-full mt-10">
+      <div className="grid grid-cols-3 w-full max-w-[1140px] gap-8">
+        <div>
+          <ReserveCalendar />
+        </div>
+        <div className="col-span-2">salm</div>
       </div>
-      <div>ss</div>
-      <Calendar />
     </div>
-  </div>)
+  );
 }

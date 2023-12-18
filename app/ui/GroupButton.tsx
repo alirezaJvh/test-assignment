@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 interface ToggleButtonProps<T> {
   buttonList: T[];
@@ -7,10 +7,10 @@ interface ToggleButtonProps<T> {
 }
 
 const BASE_TOGGLE_BUTTON_CLASSES =
-  'bg-gray-200 flex items-center p-1 rounded-lg text-sm text-gray-600';
+  "bg-gray-200 flex items-center p-1 rounded-lg text-sm text-gray-600";
 const BUTTON_CLASSES =
-  'grow px-4 py-3 min-w-[130px] rounded-lg transition-colors duration-500';
-const ACTIVE_CLASSES = 'bg-white font-bold shadow-toggle text-black';
+  "grow px-4 py-3 min-w-[130px] rounded-lg transition-colors duration-500";
+const ACTIVE_CLASSES = "bg-white font-bold shadow-toggle text-black";
 
 export function GroupButton<T>({
   buttonList,

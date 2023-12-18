@@ -1,4 +1,3 @@
 export function Logo() {
-    return (<div>test</div>);
-  }
-  
+  return <div>test</div>;
+}
