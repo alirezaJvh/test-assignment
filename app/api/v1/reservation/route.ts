@@ -1,5 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 import { format, startOfMonth, endOfMonth } from "date-fns";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -27,6 +28,28 @@ export async function POST(reqeust: Request) {
   try {
     const { date } = await reqeust.json();
     console.log(date);
+    if (!date)
+      return NextResponse.json(
+        {
+          message: "Please enter the date",
+        },
+        { status: 400 },
+      );
+    const result = await prisma.reserve.findMany({
+      where: {
+        OR: [
+          {
+            start: date,
+          },
+          {
+            end: date,
+          },
+        ],
+      },
+    });
+    console.log("fuck you");
+    console.log(result);
+    return Response.json(result);
   } catch (e) {
     console.log(e);
   }
