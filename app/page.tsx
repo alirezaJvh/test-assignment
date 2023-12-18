@@ -1,6 +1,4 @@
-// import { Button } from "./ui/Button";
 import { ReserveCalendar } from "./ui/ReserveCalendar";
-// import { useQuery } from '@tanstack/react-query'
 
 export default function Home() {
   return (
