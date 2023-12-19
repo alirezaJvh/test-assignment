@@ -22,7 +22,7 @@ async function mutationFn(data: {
   id: string;
 }) {
   const { id, from, to, date } = data;
-  const resultJson = await fetch(`/api/v1/user/${id}/reserve`, {
+  const resultJson = await fetch(`/api/v1/user/${id}`, {
     method: "POST",
     body: JSON.stringify({ date, from, to }),
   });
@@ -39,10 +39,6 @@ export function ReservationForm({ date }: ReservationFormProps) {
   });
 
   const onReserve: SubmitHandler<Inputs> = async formData => {
-    console.log("click on reserve");
-    console.log(formData);
-    console.log(new Date(`${date}`));
-    console.log(session);
     const { from, to } = formData;
     if (session?.token.id)
       await mutateAsync({ date, from, to, id: session.token.id });

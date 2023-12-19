@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
@@ -17,18 +19,15 @@ export const authOptions: NextAuthConfig = {
           where: { email: email as string },
         });
         if (!user) return null;
-        console.log(user);
         const passwordsMatch = atob(user.password) === password;
         if (passwordsMatch)
-          return { id: user.id, name: user.name, emial: user.email };
+          return { id: user.id, name: user.name, email: user.email };
         return null;
       },
     }),
   ],
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      console.log("authorized");
-      console.log(auth);
       const isLoggedIn = !!auth?.user;
       const isOnLogin = nextUrl.pathname.startsWith("/login");
       if (isLoggedIn && isOnLogin) {
@@ -41,6 +40,14 @@ export const authOptions: NextAuthConfig = {
     },
     redirect() {
       return "http://localhost:3000/";
+    },
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token, user }) {
+      // eslint-disable
+      session.token = token;
+      return session;
     },
   },
 };

@@ -6,11 +6,9 @@ export async function GET() {
   try {
     const firstDay = format(startOfMonth(new Date()), "yyyy-MM-dd");
     const lastDay = format(endOfMonth(new Date()), "yyyy-MM-dd");
-    console.log(firstDay);
-    console.log(lastDay);
     const reservations = await prisma.reserve.findMany({
       where: {
-        start: {
+        from: {
           lte: new Date(firstDay),
           gte: new Date(lastDay),
         },
@@ -39,16 +37,14 @@ export async function POST(reqeust: Request) {
       where: {
         OR: [
           {
-            start: date,
+            from: date,
           },
           {
-            end: date,
+            to: date,
           },
         ],
       },
     });
-    console.log("fuck you");
-    console.log(result);
     return Response.json(result);
   } catch (e) {
     console.log(e);

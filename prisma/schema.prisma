@@ -12,8 +12,8 @@ datasource db {
 
 model Reserve {
   id        String     @default(cuid()) @id
-  start     DateTime
-  end       DateTime
+  from     DateTime
+  to       DateTime
   user      User?   @relation(fields: [userId], references: [id])
   userId    String?
 }

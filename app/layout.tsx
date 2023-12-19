@@ -25,7 +25,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <TheHeader />
-
         <SessionProvider session={session}>
           <ReactQueryProvider>{children}</ReactQueryProvider>
         </SessionProvider>
