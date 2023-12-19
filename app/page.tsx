@@ -1,4 +1,4 @@
-import { ReserveCalendar } from "./ui/ReserveCalendar";
+import { ReserveCalendar } from "./ui/Reservation/Calendar";
 
 export default function Home() {
   return (

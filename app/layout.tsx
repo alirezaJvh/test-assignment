@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import React from "react";
 import { Inter } from "next/font/google";
 import { TheHeader } from "@/app/ui/TheHeader";
-import { ReactQueryProvider } from "./utils/ReactQueryProvider";
 import "./globals.css";
+import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth/types";
+import { ReactQueryProvider } from "./utils/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,14 +16,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  session,
 }: {
   children: React.ReactNode;
+  session: Session;
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <TheHeader />
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+
+        <SessionProvider session={session}>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </SessionProvider>
       </body>
     </html>
   );
